@@ -46,23 +46,23 @@ from std_msgs.msg import Int32
 def talker():
     pub = rospy.Publisher('chatter', Int32, queue_size=10)
     rospy.init_node('talker', anonymous=True)
-    rate = rospy.Rate(50) # 10hz
+    rate = rospy.Rate(100) # 10hz
     cnt = 0
     t=0
     while not rospy.is_shutdown():
 	cnt = cnt+1
-        t = float(cnt)/50
+        t = float(cnt)/100
 	if t<3:
-	    dxl_goal_position = 0 + 1000*float(t/3)
+	    dxl_goal_position = 0 + 300*float(t/3)
 	elif t<6:
-	    dxl_goal_position = 1000
+	    dxl_goal_position = 300
 	elif t<9:
-	    dxl_goal_position = 1000 - 1000*float((t-6)/3)
+	    dxl_goal_position = 300 - 600*float((t-6)/3)
 	else :
-	    dxl_goal_position =0
+	    dxl_goal_position =000
 
 	#dxl_goal_position = 0000+float(500*math.sin(cnt/10.0))
-        data_pub = int(dxl_goal_position)
+        data_pub = int(dxl_goal_position+2048)
         rospy.loginfo(data_pub)
         pub.publish(data_pub)
         rate.sleep()

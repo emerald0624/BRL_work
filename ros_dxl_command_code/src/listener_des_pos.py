@@ -42,9 +42,11 @@ from dynamixel_sdk import *
 from std_msgs.msg import String
 from std_msgs.msg import Float32
 from std_msgs.msg import Int32
+from maxoncontrol.msg import msgmag
 
-def callback(data):
-    rospy.loginfo(rospy.get_caller_id() + "%f", data.data)
+
+def callback(msgmag):
+    rospy.loginfo(rospy.get_caller_id() + "%f", msgmag.mag)
 
 def listener():
 
@@ -54,8 +56,9 @@ def listener():
     # name for our 'listener' node so that multiple listeners can
     # run simultaneously.
     rospy.init_node('listener', anonymous=True)
+    rospy.loginfo("1")
 
-    rospy.Subscriber("chatter", Float32, callback)
+    rospy.Subscriber("magnetic_angle", msgmag, callback)
 
     # spin() simply keeps python from exiting until this node is stopped
     rospy.spin()

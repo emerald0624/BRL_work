@@ -28,7 +28,7 @@ PROTOCOL_VERSION            = 2.0               # See which protocol version is 
 # Default setting
 DXL_ID                      = 1               # Dynamixel#1 ID : 2
 BAUDRATE                    = 1000000             # Dynamixel default baudrate : 115200
-DEVICENAME                  = '/dev/ttyUSB0'    # Check which port is being used on your controller
+DEVICENAME                  = '/dev/ttyUSB2'    # Check which port is being used on your controller
                                                 # ex) Windows: "COM1"   Linux: "/dev/ttyUSB0" Mac: "/dev/tty.usbserial-*"
 BAUD_RATE_SET		    	= 3
 OPERATING_MODE		    	= 4
