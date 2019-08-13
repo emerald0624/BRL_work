@@ -14,6 +14,7 @@ int t2;
 int n_test = 20;
 const int imax = 12;
 unsigned int value[imax];
+unsigned int val0[imax];
 float resist[imax - 1];
 float resist0[imax - 1];
 float force[imax - 1];
@@ -49,7 +50,6 @@ void setup() {
         digitalWrite(SELPIN2, HIGH);
 
       }
-      //delay(10);
     }
     for (int i = 1; i < imax; i++) {
       resist0[i - 1] = resist0[i - 1] + R0 * float(value[i]) / float(value[0] - value[i]) / float(n_test);
@@ -96,35 +96,38 @@ int read_adc(int channel) {
 
 void loop() {
   for (int i = 0; i < imax; i++) {
-    if (i < 8) {
-      digitalWrite(SELPIN1, LOW);
-      value[i] = read_adc(i);
-      digitalWrite(SELPIN1, HIGH);
+    value[i] = 0;
+  }
+  for (int k = 0; k < 20; k++) {
+    for (int i = 0; i < imax; i++) {
+      if (i < 8) {
+        digitalWrite(SELPIN1, LOW);
+        val0[i] = read_adc(i);
+        digitalWrite(SELPIN1, HIGH);
+      }
+      else {
+        digitalWrite(SELPIN2, LOW);
+        val0[i] = read_adc(i - 8);
+        digitalWrite(SELPIN2, HIGH);
 
+      }
+      value[i] = value[i] + val0[i];
     }
-    else {
-      digitalWrite(SELPIN2, LOW);
-      value[i] = read_adc(i - 8);
-      digitalWrite(SELPIN2, HIGH);
-
-    }
-    //delay(10);
+  }
+  for (int i = 0; i < imax; i++) {
+    value[i] = value[i] / 20;
   }
   for (int i = 1; i < imax; i++) {
     resist[i - 1] = R0 * float(value[i]) / float(value[0] - value[i]);
     force[i - 1] = factor[i - 1] * (1 / resist[i - 1] - 1 / resist0[i - 1]);
-    //amp[i-1] = 0.1/resist[i-1];
   }
   str = "";
-//  for (int i = 1 ; i < imax ; i++) {
-//    str = str + String(force[i - 1]) + ' ';
-//  }
   //  delay(10);
   //    t2 = micros();
   //    int delt = 1000000 / (t2 - t1);
   //    t1 = t2;
-    Serial.print(force[0]+force[1]+force[2]);
-    Serial.print(',');
-    Serial.println(force[10]);
-//  Serial.println(str);
+  Serial.print(force[0] + force[1] + force[2]);
+  Serial.print(',');
+  Serial.println(force[10]);
+  //  Serial.println(str);
 }
